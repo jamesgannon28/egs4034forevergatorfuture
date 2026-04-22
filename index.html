@@ -511,6 +511,122 @@
 
     .org-badge::before { content: '✓'; }
 
+    .org-badge.pending {
+      background: #fff3e0;
+      color: var(--gold);
+    }
+
+    .org-badge.pending::before { content: '⏳'; }
+
+    /* ── ADMIN PAGE ── */
+    .admin-login {
+      max-width: 480px;
+      margin: 5rem auto;
+      padding: 0 5vw;
+    }
+
+    .admin-login .form-card {
+      padding: 3rem;
+    }
+
+    .admin-panel {
+      padding: 3rem 5vw;
+    }
+
+    .admin-section {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .admin-org-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .admin-org-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .admin-org-info h3 {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .admin-org-info p {
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-accept {
+      background: var(--accent);
+      color: var(--white);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-weight: 500;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+
+    .btn-accept:hover {
+      background: #245a40;
+    }
+
+    .btn-deny {
+      background: #d32f2f;
+      color: var(--white);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-weight: 500;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+
+    .btn-deny:hover {
+      background: #b71c1c;
+    }
+
+    .admin-org-details {
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .admin-org-tags {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .admin-tag {
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
     .orgs-empty {
       padding: 5rem 5vw;
       text-align: center;
@@ -741,6 +857,7 @@
       <li><a href="#" onclick="showPage('home')">Home</a></li>
       <li><a href="#" onclick="showPage('beliefs')">Beliefs & Structure</a></li>
       <li><a href="#" onclick="showPage('accredited')">Accredited Orgs</a></li>
+      <li><a href="#" onclick="showPage('admin')" style="color: var(--ink-muted); font-size: 0.75rem;">Admin</a></li>
       <li><a href="#" onclick="showPage('compliance')" class="nav-cta">Register for Compliance</a></li>
     </ul>
   </nav>
@@ -1170,6 +1287,58 @@
     </footer>
   </div>
 
+  <!-- ════════════════════════════ ADMIN PAGE ════════════════════════════ -->
+  <div id="page-admin" class="page">
+    
+    <!-- Login View -->
+    <div id="admin-login-view" class="admin-login">
+      <div class="form-card">
+        <h2 class="form-title">Admin Access</h2>
+        <p class="form-subtitle">Enter password to manage pending accreditations</p>
+        
+        <div class="form-group">
+          <label>Password</label>
+          <input id="adminPassword" type="password" placeholder="Enter admin password" />
+        </div>
+        
+        <button class="btn btn-primary" style="width:100%; justify-content: center;" onclick="loginAdmin()">
+          Access Admin Panel →
+        </button>
+        <p id="loginError" style="color: #d32f2f; margin-top: 1rem; display: none; text-align: center;">Incorrect password</p>
+      </div>
+    </div>
+
+    <!-- Admin Panel View -->
+    <div id="admin-panel-view" style="display: none;">
+      <div class="admin-panel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+          <div>
+            <p class="section-tag">Admin Panel</p>
+            <h2 class="section-title">Accreditation Management</h2>
+          </div>
+          <button class="btn btn-outline" onclick="logoutAdmin()">Logout</button>
+        </div>
+
+        <div class="admin-section">
+          <h3 style="font-family: var(--serif); font-size: 1.6rem; margin-bottom: 1.5rem;">Pending Accreditations</h3>
+          <div id="pending-orgs-list"></div>
+        </div>
+
+        <div class="admin-section">
+          <h3 style="font-family: var(--serif); font-size: 1.6rem; margin-bottom: 1.5rem;">Accredited Organizations</h3>
+          <div id="accredited-orgs-list"></div>
+        </div>
+      </div>
+
+      <footer style="margin-top: 2rem;">
+        <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;">
+          <span>© 2025 ForeverGatorFuture</span>
+          <a style="color: rgba(255,255,255,0.6); cursor:pointer;" onclick="showPage('home')">← Back to Home</a>
+        </div>
+      </footer>
+    </div>
+  </div>
+
   <!-- TOAST -->
   <div class="toast" id="toast">✓ Registration submitted! We'll be in touch within 30 days.</div>
 
@@ -1214,7 +1383,7 @@
       const toast = document.getElementById('toast');
       
       if (isQualified) {
-        // Auto-add to accredited organizations
+        // Add to pending accreditations
         const tags = [];
         if (envChecked) tags.push('environmental');
         if (econChecked) tags.push('economic');
@@ -1225,19 +1394,17 @@
           type: orgType,
           initial: orgName.charAt(0).toUpperCase(),
           desc: productDesc.substring(0, 150) + (productDesc.length > 150 ? '...' : ''),
-          tags: tags
+          tags: tags,
+          status: 'pending'
         };
         
         orgs.push(newOrg);
-        renderOrgs('all');
         
-        toast.innerHTML = '🎉 Congratulations! Your organization has been automatically accredited and added to our list.';
-        toast.style.background = 'var(--accent)';
+        toast.innerHTML = '⏳ Registration submitted! Your application is pending admin review. You meet all qualification standards.';
+        toast.style.background = 'var(--gold)';
         toast.style.display = 'block';
         
-        // Clear form
         setTimeout(() => {
-          showPage('accredited');
           toast.style.display = 'none';
         }, 5000);
       } else {
@@ -1255,17 +1422,20 @@
 
     // ── Orgs Data ──
     const orgs = [
-      { name: 'Meridian AI', type: 'AI Safety & Research', initial: 'M', desc: 'Developing transparent language model evaluation tools with open benchmarks for responsible deployment.', tags: ['environmental', 'societal'] },
-      { name: 'Clarity Systems', type: 'Healthcare AI', initial: 'C', desc: 'Clinical decision support AI built with rigorous bias audits and patient privacy at its core.', tags: ['societal', 'economic'] },
-      { name: 'GreenCompute Co.', type: 'AI Infrastructure', initial: 'G', desc: 'Powering AI workloads with 100% renewable energy and a zero-landfill hardware recycling program.', tags: ['environmental', 'economic'] },
-      { name: 'Fairfield Analytics', type: 'Predictive Analytics', initial: 'F', desc: 'Bringing algorithmic fairness tooling to enterprise analytics with quarterly equity reporting.', tags: ['societal'] },
-      { name: 'OpenPath Labs', type: 'Open-Source AI', initial: 'O', desc: 'Publishing open-source AI models with full training data disclosures and community governance.', tags: ['societal', 'economic'] },
-      { name: 'TerraModel Inc.', type: 'Climate AI', initial: 'T', desc: 'Using AI to accelerate climate research while maintaining a net-negative carbon footprint.', tags: ['environmental'] },
+      { name: 'Meridian AI', type: 'AI Safety & Research', initial: 'M', desc: 'Developing transparent language model evaluation tools with open benchmarks for responsible deployment.', tags: ['environmental', 'societal'], status: 'accredited' },
+      { name: 'Clarity Systems', type: 'Healthcare AI', initial: 'C', desc: 'Clinical decision support AI built with rigorous bias audits and patient privacy at its core.', tags: ['societal', 'economic'], status: 'accredited' },
+      { name: 'GreenCompute Co.', type: 'AI Infrastructure', initial: 'G', desc: 'Powering AI workloads with 100% renewable energy and a zero-landfill hardware recycling program.', tags: ['environmental', 'economic'], status: 'accredited' },
+      { name: 'Fairfield Analytics', type: 'Predictive Analytics', initial: 'F', desc: 'Bringing algorithmic fairness tooling to enterprise analytics with quarterly equity reporting.', tags: ['societal'], status: 'accredited' },
+      { name: 'OpenPath Labs', type: 'Open-Source AI', initial: 'O', desc: 'Publishing open-source AI models with full training data disclosures and community governance.', tags: ['societal', 'economic'], status: 'accredited' },
+      { name: 'TerraModel Inc.', type: 'Climate AI', initial: 'T', desc: 'Using AI to accelerate climate research while maintaining a net-negative carbon footprint.', tags: ['environmental'], status: 'accredited' },
     ];
+
+    const ADMIN_PASSWORD = 'gator2025';
 
     function renderOrgs(filter) {
       const grid = document.getElementById('orgs-grid');
-      const filtered = filter === 'all' ? orgs : orgs.filter(o => o.tags.includes(filter));
+      const accreditedOrgs = orgs.filter(o => o.status === 'accredited');
+      const filtered = filter === 'all' ? accreditedOrgs : accreditedOrgs.filter(o => o.tags.includes(filter));
       if (!filtered.length) {
         grid.innerHTML = '<div class="orgs-empty"><p>No organizations found for this filter.</p></div>';
         return;
@@ -1292,6 +1462,108 @@
     }
 
     renderOrgs('all');
+
+    // ── Admin Functions ──
+    let isAdminLoggedIn = false;
+
+    function loginAdmin() {
+      const password = document.getElementById('adminPassword').value;
+      const errorMsg = document.getElementById('loginError');
+      
+      if (password === ADMIN_PASSWORD) {
+        isAdminLoggedIn = true;
+        document.getElementById('admin-login-view').style.display = 'none';
+        document.getElementById('admin-panel-view').style.display = 'block';
+        errorMsg.style.display = 'none';
+        renderAdminPanel();
+      } else {
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    function logoutAdmin() {
+      isAdminLoggedIn = false;
+      document.getElementById('admin-login-view').style.display = 'block';
+      document.getElementById('admin-panel-view').style.display = 'none';
+      document.getElementById('adminPassword').value = '';
+    }
+
+    function renderAdminPanel() {
+      // Render pending organizations
+      const pendingList = document.getElementById('pending-orgs-list');
+      const pendingOrgs = orgs.filter(o => o.status === 'pending');
+      
+      if (pendingOrgs.length === 0) {
+        pendingList.innerHTML = '<p style="color: var(--ink-muted); text-align: center; padding: 2rem;">No pending accreditations</p>';
+      } else {
+        pendingList.innerHTML = pendingOrgs.map((o, idx) => `
+          <div class="admin-org-item">
+            <div class="admin-org-header">
+              <div class="admin-org-info">
+                <h3>${o.name}</h3>
+                <p>${o.type}</p>
+              </div>
+              <div class="admin-actions">
+                <button class="btn-accept" onclick="acceptOrg(${orgs.indexOf(o)})">✓ Accept</button>
+                <button class="btn-deny" onclick="denyOrg(${orgs.indexOf(o)})">✗ Deny</button>
+              </div>
+            </div>
+            <div class="admin-org-details">
+              <p><strong>Description:</strong> ${o.desc}</p>
+              <div class="admin-org-tags">
+                ${o.tags.map(t => `<span class="admin-tag">${t}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Render accredited organizations
+      const accreditedList = document.getElementById('accredited-orgs-list');
+      const accreditedOrgs = orgs.filter(o => o.status === 'accredited');
+      
+      accreditedList.innerHTML = accreditedOrgs.map(o => `
+        <div class="admin-org-item">
+          <div class="admin-org-header">
+            <div class="admin-org-info">
+              <h3>${o.name}</h3>
+              <p>${o.type}</p>
+            </div>
+            <span class="org-badge">Accredited</span>
+          </div>
+          <div class="admin-org-details">
+            <p>${o.desc}</p>
+            <div class="admin-org-tags">
+              ${o.tags.map(t => `<span class="admin-tag">${t}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function acceptOrg(index) {
+      orgs[index].status = 'accredited';
+      renderAdminPanel();
+      renderOrgs('all');
+      
+      const toast = document.getElementById('toast');
+      toast.innerHTML = `✓ ${orgs[index].name} has been accredited!`;
+      toast.style.background = 'var(--accent)';
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+
+    function denyOrg(index) {
+      const orgName = orgs[index].name;
+      orgs.splice(index, 1);
+      renderAdminPanel();
+      
+      const toast = document.getElementById('toast');
+      toast.innerHTML = `✗ ${orgName} has been removed`;
+      toast.style.background = '#d32f2f';
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
   </script>
 </body>
 </html>
