@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ForeverGatorFuture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f6f2;
+      --white: #ffffff;
+      --ink: #1a1a1a;
+      --ink-soft: #4a4a4a;
+      --ink-muted: #888;
+      --accent: #2e6b4f;
+      --accent-light: #e8f1ec;
+      --accent-mid: #4a9970;
+      --border: #ddd9d0;
+      --gold: #b8986a;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(247,246,242,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw;
+      height: 68px;
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: var(--ink);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .nav-logo span {
+      display: inline-block;
+      width: 28px; height: 28px;
+      background: var(--accent);
+      border-radius: 6px;
+    }
+
+    .nav-links {
+      display: flex; gap: 2rem; list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-cta {
+      background: var(--accent);
+      color: var(--white) !important;
+      padding: 0.45rem 1.1rem;
+      border-radius: 4px;
+      transition: background 0.2s !important;
+    }
+
+    .nav-cta:hover { background: #245a40 !important; color: var(--white) !important; }
+
+    /* ── PAGES ── */
+    .page { display: none; padding-top: 68px; min-height: 100vh; }
+    .page.active { display: block; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: calc(100vh - 68px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 6rem 5vw 4rem;
+      gap: 4rem;
+    }
+
+    .hero-text { animation: fadeUp 0.8s ease both; }
+
+    .hero-eyebrow {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 24px; height: 2px;
+      background: var(--accent);
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--ink-soft);
+      line-height: 1.75;
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.8rem 1.8rem;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      border-radius: 4px;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary { background: var(--accent); color: var(--white); }
+    .btn-primary:hover { background: #245a40; transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-visual {
+      animation: fadeUp 0.8s 0.15s ease both;
+      position: relative;
+    }
+
+    .hero-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+    }
+
+    .hero-stat-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-box {
+      background: var(--accent-light);
+      border-radius: 8px;
+      padding: 1.2rem;
+    }
+
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .pillars-row {
+      display: flex; gap: 0.6rem; flex-wrap: wrap;
+    }
+
+    .pillar-chip {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 5rem 5vw; }
+
+    .section-tag {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
+    }
+
+    .section-lead {
+      font-size: 1.05rem;
+      color: var(--ink-soft);
+      max-width: 560px;
+      line-height: 1.75;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 5vw;
+    }
+
+    /* ── THREE PILLARS ── */
+    .pillars-section { background: var(--white); }
+
+    .pillars-header {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; align-items: start; margin-bottom: 3.5rem;
+    }
+
+    .pillars-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    }
+
+    .pillar-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+      background: var(--bg);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .pillar-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+
+    .pillar-icon {
+      width: 44px; height: 44px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.2rem;
+      font-size: 1.3rem;
+    }
+
+    .pillar-card h3 {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 500;
+      margin-bottom: 0.6rem;
+    }
+
+    .pillar-card p {
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      line-height: 1.65;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+      margin-top: 3rem;
+    }
+
+    .step {
+      padding: 2rem;
+      border-left: 1px solid var(--border);
+      position: relative;
+    }
+
+    .step:first-child { border-left: none; }
+
+    .step-num {
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 0.8rem;
+    }
+
+    .step h3 {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .step p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.6; }
+
+    /* ── COMPLIANCE PAGE ── */
+    .form-section {
+      max-width: 720px;
+      margin: 4rem auto;
+      padding: 0 5vw;
+    }
+
+    .form-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 3rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+    }
+
+    .form-title {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-subtitle {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+    .form-group { margin-bottom: 1.4rem; }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.4rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      color: var(--ink);
+      background: var(--bg);
+      transition: border-color 0.2s;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); background: var(--white); }
+
+    textarea { resize: vertical; min-height: 100px; }
+
+    .checkbox-group { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 0.5rem; }
+
+    .checkbox-item {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      font-size: 0.92rem; color: var(--ink-soft); line-height: 1.5;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0;
+      accent-color: var(--accent);
+    }
+
+    .form-divider { height: 1px; background: var(--border); margin: 2rem 0; }
+
+    .submit-note {
+      font-size: 0.82rem; color: var(--ink-muted);
+      margin-top: 1rem; line-height: 1.5;
+    }
+
+    /* ── ACCREDITED ORGS ── */
+    .orgs-header {
+      background: var(--white);
+      padding: 5rem 5vw 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .orgs-filter {
+      display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 2rem;
+    }
+
+    .filter-btn {
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--ink-soft);
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--white);
+    }
+
+    .orgs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      padding: 3rem 5vw;
+    }
+
+    .org-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.8rem;
+      transition: all 0.2s;
+    }
+
+    .org-card:hover { border-color: var(--accent); box-shadow: 0 6px 24px rgba(46,107,79,0.1); }
+
+    .org-card-top {
+      display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;
+    }
+
+    .org-avatar {
+      width: 48px; height: 48px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .org-name {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-weight: 500;
+    }
+
+    .org-type {
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 500;
+    }
+
+    .org-desc {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+
+    .org-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+    }
+
+    .org-badge::before { content: '✓'; }
+
+    .orgs-empty {
+      padding: 5rem 5vw;
+      text-align: center;
+      color: var(--ink-muted);
+    }
+
+    /* ── BELIEFS PAGE ── */
+    .beliefs-hero {
+      padding: 6rem 5vw 4rem;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .beliefs-intro {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+    }
+
+    .beliefs-toc {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+      position: sticky; top: 90px;
+    }
+
+    .beliefs-toc h4 {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 1rem;
+    }
+
+    .beliefs-toc ul { list-style: none; }
+
+    .beliefs-toc li { margin-bottom: 0.5rem; }
+
+    .beliefs-toc a {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.3rem 0;
+      transition: color 0.2s;
+    }
+
+    .beliefs-toc a:hover { color: var(--accent); }
+
+    .beliefs-toc a::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .beliefs-toc a:hover::before { background: var(--accent); }
+
+    .beliefs-content { padding: 4rem 5vw; }
+
+    .beliefs-body {
+      display: grid; grid-template-columns: 240px 1fr; gap: 4rem;
+    }
+
+    .belief-section {
+      margin-bottom: 4rem;
+      padding-bottom: 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .belief-section:last-child { border-bottom: none; }
+
+    .belief-num {
+      font-family: var(--serif);
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--ink-muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+    }
+
+    .belief-section h2 {
+      font-family: var(--serif);
+      font-size: 1.7rem;
+      font-weight: 400;
+      margin-bottom: 1.2rem;
+    }
+
+    .belief-section p {
+      font-size: 0.97rem;
+      color: var(--ink-soft);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .belief-list {
+      list-style: none;
+      margin-top: 1rem;
+    }
+
+    .belief-list li {
+      padding: 0.8rem 0;
+      border-top: 1px solid var(--border);
+      font-size: 0.93rem;
+      color: var(--ink-soft);
+      display: flex; gap: 0.8rem; align-items: flex-start;
+    }
+
+    .belief-list li::before {
+      content: '→';
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .author-note {
+      background: var(--accent-light);
+      border-left: 3px solid var(--accent);
+      padding: 1.2rem 1.5rem;
+      border-radius: 0 6px 6px 0;
+      margin-top: 1.5rem;
+    }
+
+    .author-note p {
+      font-size: 0.88rem;
+      color: var(--accent);
+      margin: 0;
+      font-style: italic;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.6);
+      padding: 4rem 5vw 2rem;
+    }
+
+    .footer-top {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 3rem; margin-bottom: 3rem;
+    }
+
+    .footer-logo {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-tagline { font-size: 0.9rem; line-height: 1.6; max-width: 280px; }
+
+    .footer-col h5 {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 1rem;
+    }
+
+    .footer-col ul { list-style: none; }
+
+    .footer-col li { margin-bottom: 0.5rem; }
+
+    .footer-col a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover { color: var(--white); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.82rem;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 5vw 3rem; }
+      .pillars-header { grid-template-columns: 1fr; gap: 1.5rem; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+      .step { border-left: none; border-top: 1px solid var(--border); }
+      .step:first-child, .step:nth-child(2) { border-top: none; }
+      .form-row { grid-template-columns: 1fr; }
+      .beliefs-body { grid-template-columns: 1fr; }
+      .beliefs-toc { display: none; }
+      .beliefs-intro { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .nav-links { gap: 1rem; }
+      .nav-links li:not(:last-child) { display: none; }
+    }
+
+    /* ── SUCCESS TOAST ── */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--accent); color: var(--white);
+      padding: 1rem 1.5rem; border-radius: 8px;
+      font-size: 0.9rem; font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      z-index: 999; display: none;
+      animation: fadeUp 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#" onclick="showPage('home')">
+      <span></span> ForeverGatorFuture
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('beliefs')">Beliefs & Structure</a></li>
+      <li><a href="#" onclick="showPage('accredited')">Accredited Orgs</a></li>
+      <li><a href="#" onclick="showPage('compliance')" class="nav-cta">Register for Compliance</a></li>
+    </ul>
+  </nav>
+
+  <!-- ════════════════════════════ HOME PAGE ════════════════════════════ -->
+  <div id="page-home" class="page active">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-text">
+        <p class="hero-eyebrow">Private Accreditation for AI Development</p>
+        <h1>Setting the <em>Standard</em> for Responsible AI</h1>
+        <p class="hero-desc">
+          ForeverGatorFuture is a nonprofit accreditation body that certifies AI product companies meeting our rigorous standards — shaped by industry leaders with economic, environmental, and societal impact at the forefront.
+        </p>
+        <div class="btn-group">
+          <a class="btn btn-primary" href="#" onclick="showPage('compliance')">Apply for Accreditation →</a>
+          <a class="btn btn-outline" href="#" onclick="showPage('beliefs')">Our Principles</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="hero-stat-grid">
+            <div class="stat-box">
+              <div class="stat-num">3</div>
+              <div class="stat-label">Core Pillars</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">100%</div>
+              <div class="stat-label">Transparent Standards</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">∞</div>
+              <div class="stat-label">Ongoing Compliance</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">0</div>
+              <div class="stat-label">Conflicts of Interest</div>
+            </div>
+          </div>
+          <div class="pillars-row">
+            <span class="pillar-chip">🌱 Environmental</span>
+            <span class="pillar-chip">💼 Economic</span>
+            <span class="pillar-chip">🤝 Societal</span>
+            <span class="pillar-chip">🔒 Self-Regulation</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Three Pillars -->
+    <section class="pillars-section">
+      <div class="pillars-header">
+        <div>
+          <p class="section-tag">Our Foundation</p>
+          <h2 class="section-title">Built on Three Pillars of Responsibility</h2>
+        </div>
+        <p class="section-lead">
+          Our guidelines were collaboratively developed by diverse industry voices to ensure that AI product development upholds the highest standards across every dimension of impact.
+        </p>
+      </div>
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div class="pillar-icon">🌱</div>
+          <h3>Environmental</h3>
+          <p>Accredited organizations commit to measuring and minimizing the environmental footprint of their AI systems, from compute energy use to hardware lifecycle considerations.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">💼</div>
+          <h3>Economic</h3>
+          <p>We evaluate the broader economic impact of AI products — ensuring that development practices support equitable growth rather than concentrating benefit or displacing communities.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">🤝</div>
+          <h3>Societal</h3>
+          <p>Society deserves AI that respects human dignity, privacy, and fairness. Our standards hold organizations to strict principles around bias mitigation, transparency, and public safety.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- How It Works -->
+    <section>
+      <p class="section-tag">Process</p>
+      <h2 class="section-title">How Accreditation Works</h2>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-num">01</div>
+          <h3>Register</h3>
+          <p>Submit your organization's compliance registration and self-assessment through our secure portal.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <h3>Review</h3>
+          <p>Our committee of industry experts evaluates your submission against ForeverGatorFuture's published principals.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <h3>Accredit</h3>
+          <p>Organizations meeting all criteria receive official accreditation and are listed on our public registry.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <h3>Maintain</h3>
+          <p>Accreditation is contingent on ongoing compliance. Organizations self-report and submit to periodic review.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">ForeverGatorFuture</div>
+          <p class="footer-tagline">A nonprofit setting the private standard for responsible AI product development through transparent, industry-shaped principles.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Organization</h5>
+          <ul>
+            <li><a onclick="showPage('beliefs')">Beliefs & Structure</a></li>
+            <li><a onclick="showPage('accredited')">Accredited Organizations</a></li>
+            <li><a onclick="showPage('compliance')">Register for Compliance</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Standards</h5>
+          <ul>
+            <li><a>Environmental Principles</a></li>
+            <li><a>Economic Principles</a></li>
+            <li><a>Societal Principles</a></li>
+            <li><a>Compliance Framework</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 ForeverGatorFuture. All rights reserved.</span>
+        <span>A nonprofit private accreditation body.</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ════════════════════════════ COMPLIANCE PAGE ════════════════════════════ -->
+  <div id="page-compliance" class="page">
+    <div style="background: var(--white); padding: 4rem 5vw 3rem; border-bottom: 1px solid var(--border);">
+      <p class="section-tag">Registration</p>
+      <h2 class="section-title">Register for Compliance</h2>
+      <p class="section-lead">
+        Complete the form below to begin your accreditation journey with ForeverGatorFuture. All submissions are reviewed by our standards committee within 30 business days.
+      </p>
+    </div>
+
+    <div class="form-section">
+      <div class="form-card">
+        <h3 class="form-title">Organization Registration</h3>
+        <p class="form-subtitle">Please provide accurate information about your organization and its AI development practices. Fields marked * are required.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Organization Name *</label>
+            <input type="text" placeholder="e.g. Acme AI Labs" />
+          </div>
+          <div class="form-group">
+            <label>Legal Entity Type *</label>
+            <select>
+              <option value="">Select type</option>
+              <option>Corporation</option>
+              <option>LLC</option>
+              <option>Nonprofit</option>
+              <option>Partnership</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Primary Contact Name *</label>
+            <input type="text" placeholder="Full name" />
+          </div>
+          <div class="form-group">
+            <label>Title / Role *</label>
+            <input type="text" placeholder="e.g. Chief Compliance Officer" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Contact Email *</label>
+            <input type="email" placeholder="contact@yourorg.com" />
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" placeholder="+1 (555) 000-0000" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Organization Website *</label>
+          <input type="url" placeholder="https://yourorganization.com" />
+        </div>
+
+        <div class="form-group">
+          <label>Primary AI Product / Service Description *</label>
+          <textarea placeholder="Briefly describe the AI product(s) or services your organization develops and deploys..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Approximate Organization Size *</label>
+          <select>
+            <option value="">Select size</option>
+            <option>1–10 employees</option>
+            <option>11–50 employees</option>
+            <option>51–200 employees</option>
+            <option>201–1,000 employees</option>
+            <option>1,000+ employees</option>
+          </select>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <p class="section-tag" style="margin-bottom: 1rem;">Self-Assessment</p>
+
+        <div class="form-group">
+          <label>Which pillars does your organization currently address? *</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item">
+              <input type="checkbox" />
+              <span>🌱 Environmental — We actively measure and minimize our AI systems' environmental impact.</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" />
+              <span>💼 Economic — We assess and report on the broader economic impact of our AI products.</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" />
+              <span>🤝 Societal — We adhere to fairness, transparency, and safety standards in all AI outputs.</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Does your organization have a written AI ethics or compliance policy?</label>
+          <select>
+            <option value="">Select one</option>
+            <option>Yes — publicly published</option>
+            <option>Yes — internal only</option>
+            <option>In development</option>
+            <option>No</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Additional Notes or Context</label>
+          <textarea placeholder="Anything else you'd like our review committee to know..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <div class="checkbox-group">
+            <label class="checkbox-item">
+              <input type="checkbox" />
+              <span>I confirm that the information provided is accurate and that our organization consents to ForeverGatorFuture's review process and public listing upon accreditation.</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" />
+              <span>I have read and agree to comply with ForeverGatorFuture's published principles and ongoing compliance requirements.</span>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%; justify-content: center;" onclick="submitForm()">
+          Submit Registration →
+        </button>
+        <p class="submit-note">Submissions are reviewed within 30 business days. You will receive a confirmation email upon receipt. This registration does not guarantee accreditation.</p>
+      </div>
+    </div>
+
+    <footer style="margin-top: 2rem;">
+      <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;">
+        <span>© 2025 ForeverGatorFuture</span>
+        <a style="color: rgba(255,255,255,0.6); cursor:pointer;" onclick="showPage('home')">← Back to Home</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ════════════════════════════ ACCREDITED ORGS PAGE ════════════════════════════ -->
+  <div id="page-accredited" class="page">
+    <div class="orgs-header">
+      <p class="section-tag">Registry</p>
+      <h2 class="section-title">Accredited Organizations</h2>
+      <p class="section-lead">
+        The following organizations have met ForeverGatorFuture's rigorous standards and hold current accreditation status. All listings are updated following each review cycle.
+      </p>
+      <div class="orgs-filter">
+        <button class="filter-btn active" onclick="filterOrgs('all', this)">All Organizations</button>
+        <button class="filter-btn" onclick="filterOrgs('environmental', this)">🌱 Environmental</button>
+        <button class="filter-btn" onclick="filterOrgs('economic', this)">💼 Economic</button>
+        <button class="filter-btn" onclick="filterOrgs('societal', this)">🤝 Societal</button>
+      </div>
+    </div>
+
+    <div class="orgs-grid" id="orgs-grid">
+      <!-- Cards rendered by JS -->
+    </div>
+
+    <footer>
+      <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;">
+        <span>© 2025 ForeverGatorFuture</span>
+        <a style="color: rgba(255,255,255,0.6); cursor:pointer;" onclick="showPage('home')">← Back to Home</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ════════════════════════════ BELIEFS PAGE ════════════════════════════ -->
+  <div id="page-beliefs" class="page">
+    <div class="beliefs-hero">
+      <p class="section-tag">Beliefs & Structure</p>
+      <h2 class="section-title" style="max-width: 640px;">Our Principles, Transparently Stated</h2>
+      <p class="section-lead">
+        ForeverGatorFuture's guidelines are openly published and were crafted collectively by industry members across sectors. There are no hidden criteria — what you see is what we evaluate.
+      </p>
+    </div>
+
+    <div class="beliefs-content">
+      <div class="beliefs-body">
+        <div class="beliefs-toc">
+          <h4>On This Page</h4>
+          <ul>
+            <li><a href="#b1">Mission & Purpose</a></li>
+            <li><a href="#b2">Organizational Structure</a></li>
+            <li><a href="#b3">Environmental Principles</a></li>
+            <li><a href="#b4">Economic Principles</a></li>
+            <li><a href="#b5">Societal Principles</a></li>
+            <li><a href="#b6">Compliance Framework</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="belief-section" id="b1">
+            <div class="belief-num">Section 01</div>
+            <h2>Mission & Purpose</h2>
+            <p>ForeverGatorFuture exists to fill a critical gap in the AI development landscape: the absence of a credible, industry-led private standard for care, responsibility, and accountability.</p>
+            <p>We believe that the organizations building AI products bear a profound responsibility — not just to their customers, but to the communities and ecosystems their technologies affect. Our accreditation is a signal to the public that an organization takes that responsibility seriously.</p>
+            <div class="author-note">
+              <p>All guidelines within this document were developed collaboratively by ForeverGatorFuture members representing technology, policy, environmental science, and social impact sectors.</p>
+            </div>
+          </div>
+
+          <div class="belief-section" id="b2">
+            <div class="belief-num">Section 02</div>
+            <h2>Organizational Structure</h2>
+            <p>ForeverGatorFuture operates as a nonprofit governed by a Standards Council composed of rotating industry members. No single corporate interest may hold a majority of seats on the council.</p>
+            <ul class="belief-list">
+              <li>The Standards Council convenes quarterly to review and update published principles.</li>
+              <li>A separate Review Committee evaluates accreditation applications independently.</li>
+              <li>All changes to principles require a supermajority vote and a public comment period.</li>
+              <li>Annual financial disclosures are published and publicly available.</li>
+              <li>No accreditation fees are charged; funding comes from member dues and grants.</li>
+            </ul>
+          </div>
+
+          <div class="belief-section" id="b3">
+            <div class="belief-num">Section 03</div>
+            <h2>Environmental Principles</h2>
+            <p>AI systems carry real environmental costs. Accredited organizations are expected to take measurable steps to understand and reduce those costs.</p>
+            <ul class="belief-list">
+              <li>Report compute energy consumption annually, including training and inference loads.</li>
+              <li>Publicly disclose data center energy sources and progress toward renewable energy use.</li>
+              <li>Adopt hardware lifecycle policies that minimize e-waste from AI infrastructure.</li>
+              <li>Conduct and publish annual environmental impact assessments for major product lines.</li>
+              <li>Set meaningful, time-bound reduction targets and report on progress.</li>
+            </ul>
+          </div>
+
+          <div class="belief-section" id="b4">
+            <div class="belief-num">Section 04</div>
+            <h2>Economic Principles</h2>
+            <p>The economic effects of AI — on labor, on communities, on wealth distribution — are real and demand intentional stewardship from developers.</p>
+            <ul class="belief-list">
+              <li>Assess and document the labor market impacts of deployed AI products.</li>
+              <li>Maintain fair compensation and working conditions throughout the supply chain.</li>
+              <li>Avoid predatory pricing structures that create access inequality.</li>
+              <li>Support workforce transition programs where AI displaces existing roles.</li>
+              <li>Engage in good faith with regulatory bodies and community stakeholders.</li>
+            </ul>
+          </div>
+
+          <div class="belief-section" id="b5">
+            <div class="belief-num">Section 05</div>
+            <h2>Societal Principles</h2>
+            <p>AI products touch the lives of real people. Accredited organizations hold the highest standard of care for human dignity, privacy, and fairness.</p>
+            <ul class="belief-list">
+              <li>Maintain robust bias testing and mitigation processes across all AI outputs.</li>
+              <li>Publish transparency reports on model decision-making and limitations.</li>
+              <li>Uphold user privacy as a foundational design principle, not an afterthought.</li>
+              <li>Avoid deploying AI in applications that endanger vulnerable populations.</li>
+              <li>Maintain accessible, human-centered appeal and redress processes for affected parties.</li>
+            </ul>
+          </div>
+
+          <div class="belief-section" id="b6">
+            <div class="belief-num">Section 06</div>
+            <h2>Compliance Framework</h2>
+            <p>Accreditation is not a one-time award. It is an ongoing commitment, renewed through demonstrated adherence to ForeverGatorFuture's principles.</p>
+            <ul class="belief-list">
+              <li>Organizations submit annual self-assessments covering all three pillars.</li>
+              <li>The Review Committee may request additional documentation or conduct interviews.</li>
+              <li>Organizations are reviewed in full every two years by an independent panel.</li>
+              <li>Accreditation may be suspended or revoked upon violation of principles.</li>
+              <li>All accreditation decisions are documented and available upon request.</li>
+            </ul>
+            <div class="author-note">
+              <p>Questions about the compliance framework may be directed to our Standards Council through the registration form.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;">
+        <span>© 2025 ForeverGatorFuture</span>
+        <a style="color: rgba(255,255,255,0.6); cursor:pointer;" onclick="showPage('home')">← Back to Home</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">✓ Registration submitted! We'll be in touch within 30 days.</div>
+
+  <script>
+    // ── Page Routing ──
+    function showPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    // ── Form Submit ──
+    function submitForm() {
+      const toast = document.getElementById('toast');
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 4000);
+    }
+
+    // ── Orgs Data ──
+    const orgs = [
+      { name: 'Meridian AI', type: 'AI Safety & Research', initial: 'M', desc: 'Developing transparent language model evaluation tools with open benchmarks for responsible deployment.', tags: ['environmental', 'societal'] },
+      { name: 'Clarity Systems', type: 'Healthcare AI', initial: 'C', desc: 'Clinical decision support AI built with rigorous bias audits and patient privacy at its core.', tags: ['societal', 'economic'] },
+      { name: 'GreenCompute Co.', type: 'AI Infrastructure', initial: 'G', desc: 'Powering AI workloads with 100% renewable energy and a zero-landfill hardware recycling program.', tags: ['environmental', 'economic'] },
+      { name: 'Fairfield Analytics', type: 'Predictive Analytics', initial: 'F', desc: 'Bringing algorithmic fairness tooling to enterprise analytics with quarterly equity reporting.', tags: ['societal'] },
+      { name: 'OpenPath Labs', type: 'Open-Source AI', initial: 'O', desc: 'Publishing open-source AI models with full training data disclosures and community governance.', tags: ['societal', 'economic'] },
+      { name: 'TerraModel Inc.', type: 'Climate AI', initial: 'T', desc: 'Using AI to accelerate climate research while maintaining a net-negative carbon footprint.', tags: ['environmental'] },
+    ];
+
+    function renderOrgs(filter) {
+      const grid = document.getElementById('orgs-grid');
+      const filtered = filter === 'all' ? orgs : orgs.filter(o => o.tags.includes(filter));
+      if (!filtered.length) {
+        grid.innerHTML = '<div class="orgs-empty"><p>No organizations found for this filter.</p></div>';
+        return;
+      }
+      grid.innerHTML = filtered.map(o => `
+        <div class="org-card">
+          <div class="org-card-top">
+            <div class="org-avatar">${o.initial}</div>
+            <div>
+              <div class="org-name">${o.name}</div>
+              <div class="org-type">${o.type}</div>
+            </div>
+          </div>
+          <p class="org-desc">${o.desc}</p>
+          <span class="org-badge">FGF Accredited</span>
+        </div>
+      `).join('');
+    }
+
+    function filterOrgs(tag, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderOrgs(tag);
+    }
+
+    renderOrgs('all');
+  </script>
+</body>
+</html>
