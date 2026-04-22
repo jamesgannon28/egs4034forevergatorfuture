@@ -902,11 +902,11 @@
         <div class="form-row">
           <div class="form-group">
             <label>Organization Name *</label>
-            <input type="text" placeholder="e.g. Acme AI Labs" />
+            <input id="orgName" type="text" placeholder="e.g. Acme AI Labs" required />
           </div>
           <div class="form-group">
             <label>Legal Entity Type *</label>
-            <select>
+            <select id="orgType" required>
               <option value="">Select type</option>
               <option>Corporation</option>
               <option>LLC</option>
@@ -920,38 +920,38 @@
         <div class="form-row">
           <div class="form-group">
             <label>Primary Contact Name *</label>
-            <input type="text" placeholder="Full name" />
+            <input id="contactName" type="text" placeholder="Full name" required />
           </div>
           <div class="form-group">
             <label>Title / Role *</label>
-            <input type="text" placeholder="e.g. Chief Compliance Officer" />
+            <input id="contactTitle" type="text" placeholder="e.g. Chief Compliance Officer" required />
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label>Contact Email *</label>
-            <input type="email" placeholder="contact@yourorg.com" />
+            <input id="contactEmail" type="email" placeholder="contact@yourorg.com" required />
           </div>
           <div class="form-group">
             <label>Phone Number</label>
-            <input type="tel" placeholder="+1 (555) 000-0000" />
+            <input id="contactPhone" type="tel" placeholder="+1 (555) 000-0000" />
           </div>
         </div>
 
         <div class="form-group">
           <label>Organization Website *</label>
-          <input type="url" placeholder="https://yourorganization.com" />
+          <input id="orgWebsite" type="url" placeholder="https://yourorganization.com" required />
         </div>
 
         <div class="form-group">
           <label>Primary AI Product / Service Description *</label>
-          <textarea placeholder="Briefly describe the AI product(s) or services your organization develops and deploys..."></textarea>
+          <textarea id="productDesc" placeholder="Briefly describe the AI product(s) or services your organization develops and deploys..." required></textarea>
         </div>
 
         <div class="form-group">
           <label>Approximate Organization Size *</label>
-          <select>
+          <select id="orgSize" required>
             <option value="">Select size</option>
             <option>1–10 employees</option>
             <option>11–50 employees</option>
@@ -969,15 +969,15 @@
           <label>Which pillars does your organization currently address? *</label>
           <div class="checkbox-group">
             <label class="checkbox-item">
-              <input type="checkbox" />
+              <input id="pillarEnvironmental" type="checkbox" />
               <span>🌱 Environmental — We actively measure and minimize our AI systems' environmental impact.</span>
             </label>
             <label class="checkbox-item">
-              <input type="checkbox" />
+              <input id="pillarEconomic" type="checkbox" />
               <span>💼 Economic — We assess and report on the broader economic impact of our AI products.</span>
             </label>
             <label class="checkbox-item">
-              <input type="checkbox" />
+              <input id="pillarSocietal" type="checkbox" />
               <span>🤝 Societal — We adhere to fairness, transparency, and safety standards in all AI outputs.</span>
             </label>
           </div>
@@ -985,28 +985,28 @@
 
         <div class="form-group">
           <label>Does your organization have a written AI ethics or compliance policy?</label>
-          <select>
+          <select id="ethicsPolicy">
             <option value="">Select one</option>
-            <option>Yes — publicly published</option>
-            <option>Yes — internal only</option>
-            <option>In development</option>
-            <option>No</option>
+            <option value="public">Yes — publicly published</option>
+            <option value="internal">Yes — internal only</option>
+            <option value="development">In development</option>
+            <option value="no">No</option>
           </select>
         </div>
 
         <div class="form-group">
           <label>Additional Notes or Context</label>
-          <textarea placeholder="Anything else you'd like our review committee to know..."></textarea>
+          <textarea id="additionalNotes" placeholder="Anything else you'd like our review committee to know..."></textarea>
         </div>
 
         <div class="form-group">
           <div class="checkbox-group">
             <label class="checkbox-item">
-              <input type="checkbox" />
+              <input id="consentAccuracy" type="checkbox" required />
               <span>I confirm that the information provided is accurate and that our organization consents to ForeverGatorFuture's review process and public listing upon accreditation.</span>
             </label>
             <label class="checkbox-item">
-              <input type="checkbox" />
+              <input id="consentCompliance" type="checkbox" required />
               <span>I have read and agree to comply with ForeverGatorFuture's published principles and ongoing compliance requirements.</span>
             </label>
           </div>
@@ -1183,9 +1183,74 @@
 
     // ── Form Submit ──
     function submitForm() {
+      // Get form values
+      const orgName = document.getElementById('orgName').value.trim();
+      const orgType = document.getElementById('orgType').value;
+      const productDesc = document.getElementById('productDesc').value.trim();
+      
+      // Check pillars
+      const envChecked = document.getElementById('pillarEnvironmental').checked;
+      const econChecked = document.getElementById('pillarEconomic').checked;
+      const socChecked = document.getElementById('pillarSocietal').checked;
+      
+      // Check ethics policy
+      const ethicsPolicy = document.getElementById('ethicsPolicy').value;
+      
+      // Check consent
+      const consent1 = document.getElementById('consentAccuracy').checked;
+      const consent2 = document.getElementById('consentCompliance').checked;
+      
+      // Validate required fields
+      if (!orgName || !orgType || !productDesc || !consent1 || !consent2) {
+        alert('Please fill in all required fields and accept the terms.');
+        return;
+      }
+      
+      // Determine qualification status
+      const allPillarsChecked = envChecked && econChecked && socChecked;
+      const hasEthicsPolicy = ethicsPolicy === 'public' || ethicsPolicy === 'internal';
+      const isQualified = allPillarsChecked && hasEthicsPolicy;
+      
       const toast = document.getElementById('toast');
-      toast.style.display = 'block';
-      setTimeout(() => { toast.style.display = 'none'; }, 4000);
+      
+      if (isQualified) {
+        // Auto-add to accredited organizations
+        const tags = [];
+        if (envChecked) tags.push('environmental');
+        if (econChecked) tags.push('economic');
+        if (socChecked) tags.push('societal');
+        
+        const newOrg = {
+          name: orgName,
+          type: orgType,
+          initial: orgName.charAt(0).toUpperCase(),
+          desc: productDesc.substring(0, 150) + (productDesc.length > 150 ? '...' : ''),
+          tags: tags
+        };
+        
+        orgs.push(newOrg);
+        renderOrgs('all');
+        
+        toast.innerHTML = '🎉 Congratulations! Your organization has been automatically accredited and added to our list.';
+        toast.style.background = 'var(--accent)';
+        toast.style.display = 'block';
+        
+        // Clear form
+        setTimeout(() => {
+          showPage('accredited');
+          toast.style.display = 'none';
+        }, 5000);
+      } else {
+        // Does not meet automatic qualification
+        let reasons = [];
+        if (!allPillarsChecked) reasons.push('all three pillars must be addressed');
+        if (!hasEthicsPolicy) reasons.push('a written AI ethics or compliance policy is required');
+        
+        toast.innerHTML = `⏳ Registration submitted for review. To qualify for automatic accreditation: ${reasons.join(' and ')}.`;
+        toast.style.background = '#b8986a';
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 6000);
+      }
     }
 
     // ── Orgs Data ──
